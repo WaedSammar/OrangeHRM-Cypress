@@ -4,7 +4,14 @@ import { PIMPage } from "../../support/page-object/pim-page";
 import { IEmployeeInfo } from "../../support/types/employee";
 
 describe("Employee management - Add and Save Test Cases", () => {
-  let employeeInfo: IEmployeeInfo;
+  let employeeMockData: IEmployeeInfo, employeeInfo: IEmployeeInfo;
+
+  before(() => {
+    cy.fixture('employee-page-mock').then((addEmployeeData) => {
+      employeeMockData = addEmployeeData
+    })
+  })
+
   beforeEach(() => {
     cy.login();
   });
