@@ -7,16 +7,19 @@ describe("Employee management - Add and Save Test Cases", () => {
   let employeeMockData: IEmployeeInfo, employeeInfo: IEmployeeInfo;
 
   before(() => {
-    cy.fixture('employee-page-mock').then((addEmployeeData) => {
-      employeeMockData = addEmployeeData
-    })
-  })
+    cy.fixture("employee-page-mock").then((addEmployeeData) => {
+      employeeMockData = addEmployeeData;
+    });
+  });
 
   beforeEach(() => {
     cy.login();
+    employeeInfo = {
+      ...employeeMockData,
+    };
   });
 
-  it("Adding a new employee, saving information and verifying it", () => {
+  it("Adding a new employee", () => {
     PIMPage.goToPIMPage();
     PIMPage.clickAddBtn();
     PIMPage.fillEmployeeInfo(employeeInfo);
