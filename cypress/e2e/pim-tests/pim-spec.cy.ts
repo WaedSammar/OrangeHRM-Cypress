@@ -1,5 +1,6 @@
 import { APIsHelper } from "../../support/helpers/apis-helper";
 import { CommonHelper } from "../../support/helpers/common-helper";
+import { PIMPageHelper } from "../../support/helpers/pim-page-helpers";
 import { PIMPage } from "../../support/page-object/pim-page";
 import { IEmployeeInfo } from "../../support/types/employee";
 
@@ -31,5 +32,15 @@ describe("Employee management - Add and Save Test Cases", () => {
     APIsHelper.interceptGetEmployeeDetailsRequest(createLoadPersonalDetails);
     PIMPage.clickSave();
     APIsHelper.waitForApiResponse(createLoadPersonalDetails);
+  });
+
+  afterEach(() => {
+    cy.logout();
+    cy.login();
+    PIMPageHelper.getEmpNumberByEmployeeId(employeeInfo.employeeId).then(
+      (empNumber) => {
+        PIMPageHelper.deleteUsers([empNumber!]);
+      }
+    );
   });
 });

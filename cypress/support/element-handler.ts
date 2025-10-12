@@ -3,7 +3,16 @@ import { COMMON_BUTTONS, HTML_TAGS } from "./helpers/constants";
 const COMMON_LOCATORS = {
   menuItems: "span.oxd-main-menu-item--name",
   submitBtn: `${HTML_TAGS.button}[type='submit']`,
+  dropDownList: ".oxd-userdropdown-name",
+  dropDownMenu: ".oxd-dropdown-menu",
 };
+
+enum DROP_DOWN {
+  ABOUT = "About",
+  SUPPORT = "Support",
+  CHANGE_PASSWORD = "Change Password",
+  LOGOUT = "Logout",
+}
 
 class ElementHandler {
   /**
@@ -64,4 +73,4 @@ class ElementHandler {
     cy.get(COMMON_LOCATORS.submitBtn).eq(index).click().contains(buttonText);
   }
 }
-export { ElementHandler };
+export { ElementHandler, COMMON_LOCATORS, DROP_DOWN };
