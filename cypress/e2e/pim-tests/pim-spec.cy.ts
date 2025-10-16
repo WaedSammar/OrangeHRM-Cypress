@@ -12,7 +12,6 @@ describe("Employee management - Add and Save Test Cases", () => {
     employeeInfo: IEmployeeInfo;
   let employeeNum: number[] = [],
     leaveIds: number[] = [];
-  let employeeFirstName: string[] = [];
 
   before(() => {
     cy.fixture("leave-page-mock").then((leavePageData) => {
@@ -59,11 +58,10 @@ describe("Employee management - Add and Save Test Cases", () => {
     for (let i = 0; i < 5; i++) {
       PIMPageHelper.createEmployeeViaAPI(employeeInfo).then((response) => {
         employeeNum.push(response.body.data.empNumber);
-        employeeFirstName.push(response.body.data.firstName);
         LeavePageHelper.addLeaveEntitlements(
           leavePageInfo,
           employeeNum[i],
-          leaveIds[i]
+          leaveIds[0]
         );
       });
     }

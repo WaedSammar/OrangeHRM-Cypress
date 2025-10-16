@@ -28,25 +28,15 @@ class LeaveInitializer {
    * @param {number} leaveTypeId
    * @returns
    */
-  static initializerAddEntitlements(
-    leavePageInfo: ILeaveRequestData,
-    empNumber: number,
-    leaveTypeId: number
-  ) {
+  static initializerAddEntitlements(leavePageInfo: ILeaveRequestData, empNumber: number, leaveTypeId: number) {
     const payload = {
       empNumber,
-      entitlement:
-        leavePageInfo.entitlementDuration ||
-        faker.number.int({ min: 1, max: 30 }),
-      fromDate:
-        leavePageInfo.entitlementFromDate ||
-        CHANGE_DATE_FORMAT(faker.date.future()),
+      entitlement: leavePageInfo.entitlementDuration || faker.number.int({ min: 1, max: 30 }),
+      fromDate: leavePageInfo.entitlementFromDate || CHANGE_DATE_FORMAT(faker.date.future()),
       leaveTypeId,
-      toDate:
-        leavePageInfo.entitlementEndDate ||
-        CHANGE_DATE_FORMAT(faker.date.future()),
-    };
-    return payload;
+      toDate: leavePageInfo.entitlementEndDate || CHANGE_DATE_FORMAT(faker.date.future())
+    }
+    return payload
   }
 }
 export { LeaveInitializer };

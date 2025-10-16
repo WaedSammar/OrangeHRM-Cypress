@@ -5,6 +5,7 @@ import { HTTP_METHODS } from "./constants";
 
 const URLs = {
   addLeaveEntitlements: `/web/index.php/api/v2/leave/leave-entitlements`,
+  addLeaveTypes: `/web/index.php/api/v2/leave/leave-types`,
 };
 
 class LeavePageHelper {
@@ -17,7 +18,7 @@ class LeavePageHelper {
     const payload = LeaveInitializer.initializerAddLeaveType(leavePageInfo);
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
-      URLs.addLeaveEntitlements,
+      URLs.addLeaveTypes,
       payload
     ).then((response) => {
       return response;
