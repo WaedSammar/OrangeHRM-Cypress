@@ -1,8 +1,10 @@
+import { IEmployeeInfo } from "../types/employee";
 import { CommonHelper } from "./common-helper";
 import { HTTP_METHODS } from "./constants";
 
 const URLs = {
   employees: `/web/index.php/api/v2/pim/employees`,
+  users: `/web/index.php/api/v2/admin/users`,
 };
 
 class PIMPageHelper {
@@ -23,6 +25,42 @@ class PIMPageHelper {
         return matchedEmployee ? matchedEmployee.empNumber : null;
       }
     );
+  }
+
+  /**
+   *
+   * @param {IEmployeeInfo} employeeData
+   * @returns
+   */
+  createEmployeeViaAPI(employeeData: IEmployeeInfo) {
+    return CommonHelper.sendAPIRequest(HTTP_METHODS.POST, URLs.employees, {
+        firstName: employeeData.firstName,
+        middleName: employeeData.middleName,
+        lastName: employeeData.lastName,
+        employeeId: employeeData.employeeId,
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  /**
+   * add username and password for the employee
+   * @param {IEmployeeInfo} employeeData
+   * @param {number} empNumber
+   * @returns
+   */
+  createUserViaAPI(employeeData: IEmployeeInfo, empNumber: number) {
+    return CommonHelper.sendAPIRequest(HTTP_METHODS.POST, URLs.users, {
+        username: employeeData.userName,
+        password: employeeData.password,
+        status: true,
+        userRoleId: 2,
+        empNumber,
+      })
+      .then((response) => {
+        return response;
+      });
   }
 
   /**
