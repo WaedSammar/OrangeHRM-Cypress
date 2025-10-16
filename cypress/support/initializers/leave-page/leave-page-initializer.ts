@@ -38,5 +38,34 @@ class LeaveInitializer {
     }
     return payload
   }
+
+  /**
+   * Initializer for select leave period
+   * @param leavePageInfo
+   * @returns
+   */
+  static initializerSelectLeavePeriod(leavePageInfo: ILeaveRequestData) {
+    const payload = {
+      startDay: leavePageInfo.leavePerStartedDay || faker.number.int({ min: 1, max: 28 }),
+      startMonth: leavePageInfo.leavePerStartedMonth || faker.number.int({ min: 1, max: 12 })
+    }
+    return payload
+  }
+
+  /**
+   * Initializer for apply leave  request
+   * @param {ILeaveRequestData} leavePageInfo
+   * @param {number} leaveTypeId
+   * @returns
+   */
+  static initializerApplyLeaveRequest(leavePageInfo: ILeaveRequestData, leaveTypeId: number) {
+    const payload = {
+      comment: leavePageInfo.leaveRequestComment || faker.lorem.sentence(),
+      fromDate: leavePageInfo.leaveRequestFromDate || CHANGE_DATE_FORMAT(faker.date.future()),
+      leaveTypeId,
+      toDate: leavePageInfo.leaveRequestEndDate || CHANGE_DATE_FORMAT(faker.date.future())
+    }
+    return payload
+  }
 }
 export { LeaveInitializer };
