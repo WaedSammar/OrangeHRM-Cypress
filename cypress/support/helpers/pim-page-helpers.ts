@@ -1,3 +1,4 @@
+import { PIMInitializer } from "../initializers/pim-page/pim-page-initializer";
 import { IEmployeeInfo } from "../types/employee";
 import { CommonHelper } from "./common-helper";
 import { HTTP_METHODS } from "./constants";
@@ -29,38 +30,40 @@ class PIMPageHelper {
 
   /**
    *
-   * @param {IEmployeeInfo} employeeData
+   * @param {IEmployeeInfo} employeeInfo
    * @returns
    */
-  createEmployeeViaAPI(employeeData: IEmployeeInfo) {
-    return CommonHelper.sendAPIRequest(HTTP_METHODS.POST, URLs.employees, {
-        firstName: employeeData.firstName,
-        middleName: employeeData.middleName,
-        lastName: employeeData.lastName,
-        employeeId: employeeData.employeeId,
-      })
-      .then((response) => {
-        return response;
-      });
+  static createEmployeeViaAPI(employeeInfo: IEmployeeInfo) {
+    const payload = PIMInitializer.initializerEmployeePayload(employeeInfo);
+    return CommonHelper.sendAPIRequest(
+      HTTP_METHODS.POST,
+      URLs.employees,
+      payload
+    ).then((response) => {
+      return response;
+    });
   }
 
   /**
    * add username and password for the employee
-   * @param {IEmployeeInfo} employeeData
+   * @param {IEmployeeInfo} employeeInfo
    * @param {number} empNumber
    * @returns
    */
-  createUserViaAPI(employeeData: IEmployeeInfo, empNumber: number) {
+  static createUserViaAPI(employeeInfo: IEmployeeInfo, empNumber: number) {
+    const payload = PIMInitializer.initializerUserPayload(employeeInfo);
     return CommonHelper.sendAPIRequest(HTTP_METHODS.POST, URLs.users, {
-        username: employeeData.userName,
-        password: employeeData.password,
-        status: true,
-        userRoleId: 2,
-        empNumber,
-      })
-      .then((response) => {
-        return response;
-      });
+      ...payload,
+      empNumber,
+    }).then((response) => {
+      return {
+        response,
+        credentials: {
+          username: payload.username,
+          password: payload.password,
+        },
+      };
+    });
   }
 
   /**

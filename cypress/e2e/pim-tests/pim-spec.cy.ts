@@ -34,6 +34,12 @@ describe("Employee management - Add and Save Test Cases", () => {
     APIsHelper.waitForApiResponse(createLoadPersonalDetails);
   });
 
+  it("Adding five employees via API", () => {
+    for (let i = 0; i < 5; i++) {
+      PIMPageHelper.createEmployeeViaAPI(employeeInfo);
+    }
+  });
+
   afterEach(() => {
     cy.logout();
     cy.login();
