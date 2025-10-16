@@ -1,3 +1,4 @@
+import { LeaveInitializer } from "../initializers/leave-page/leave-page-initializer";
 import { ILeaveRequestData } from "../types/leave";
 import { CommonHelper } from "./common-helper";
 import { HTTP_METHODS } from "./constants";
@@ -12,14 +13,12 @@ class LeavePageHelper {
    * @param {ILeaveRequestData} leavePageInfo
    * @returns
    */
-  addLeaveType(leavePageInfo: ILeaveRequestData) {
+  static addLeaveType(leavePageInfo: ILeaveRequestData) {
+    const payload = LeaveInitializer.initializerAddLeaveType(leavePageInfo);
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.addLeaveEntitlements,
-      {
-        name: leavePageInfo.leaveTypeName,
-        situational: leavePageInfo.leaveSituational,
-      }
+      payload
     ).then((response) => {
       return response;
     });
@@ -31,22 +30,23 @@ class LeavePageHelper {
    * @param {number} empNumber
    * @param {number} leaveTypeId
    */
-  addLeaveEntitlements(
+  static addLeaveEntitlements(
     leavePageInfo: ILeaveRequestData,
     empNumber: number,
     leaveTypeId: number
   ) {
+    const payload = LeaveInitializer.initializerAddEntitlements(
+      leavePageInfo,
+      empNumber,
+      leaveTypeId
+    );
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.addLeaveEntitlements,
-      {
-        empNumber,
-        entitlement: leavePageInfo.entitlementDuration,
-        fromDate: leavePageInfo.entitlementFromDate,
-        leaveTypeId,
-        toDate: leavePageInfo.entitlementEndDate,
-      }
-    );
+      payload
+    ).then((response) => {
+      return response;
+    });
   }
 }
 export { LeavePageHelper };

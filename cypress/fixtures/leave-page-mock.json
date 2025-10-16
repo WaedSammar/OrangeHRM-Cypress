@@ -1,14 +1,7 @@
 {
   "leaveTypeName": "Casual Leave",
   "leaveSituational": false,
-  // "leavePerStartedDay": 1,
-  // "leavePerStartedMonth": 1,
   "entitlementDuration": 5,
   "entitlementFromDate": "2025-01-01",
   "entitlementEndDate": "2025-12-31"
-  // "leaveRequestComment": "Emergency",
-  // "leaveRequestFromDate": "2025-07-20",
-  // "leaveRequestEndDate": "2025-07-25",
-  // "leaveRequestStatus": "APPROVE",
-  // "leaveStatus": "Scheduled"
 }
