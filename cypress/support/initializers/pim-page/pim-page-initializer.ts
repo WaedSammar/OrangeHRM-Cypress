@@ -14,12 +14,10 @@ class PIMInitializer {
    */
   static initializerEmployeePayload(employeeData: IEmployeeInfo) {
     const payload = {
-      firstName: employeeData.firstName || faker.person.firstName(),
-      middleName: employeeData.middleName || faker.person.middleName(),
-      lastName: employeeData.lastName || faker.person.lastName(),
-      employeeId:
-        employeeData.employeeId ??
-        faker.number.int({ min: 1000, max: 9999 }).toString(),
+      firstName: faker.person.firstName(),
+      middleName: faker.person.middleName(),
+      lastName: faker.person.lastName(),
+      employeeId: faker.number.int({ min: 1000, max: 9999 }).toString(),
     };
     return payload;
   }
