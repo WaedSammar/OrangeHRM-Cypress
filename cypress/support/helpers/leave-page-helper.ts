@@ -6,7 +6,7 @@ import { HTTP_METHODS } from "./constants";
 const leaveBaseURL = "/web/index.php/api/v2/leave";
 const URLs = {
   addLeaveEntitlements: `${leaveBaseURL}/leave-entitlements`,
-  addLeaveTypes: `${leaveBaseURL}/leave-types`,
+  leaveTypes: `${leaveBaseURL}/leave-types`,
   leavePeriod: `${leaveBaseURL}/leave-period`,
   leaveRequest: `${leaveBaseURL}/leave-requests`,
   employeeRequest: `${leaveBaseURL}/employees/leave-requests`,
@@ -22,7 +22,7 @@ class LeavePageHelper {
     const payload = LeaveInitializer.initializerAddLeaveType(leavePageInfo);
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
-      URLs.addLeaveTypes,
+      URLs.leaveTypes,
       payload
     ).then((response) => {
       return response;
@@ -111,6 +111,15 @@ class LeavePageHelper {
         action: leavePageInfo.leaveRequestStatus,
       }
     );
+  }
+
+  /**
+   * delete added leave type
+   * @param {ILeaveRequestData} leaveTypeIds
+   * @returns
+   */
+  static deleteLeaveType(leaveTypeIds: number[]) {
+    return CommonHelper.cleanup(URLs.leaveTypes, leaveTypeIds)
   }
 }
 export { LeavePageHelper };

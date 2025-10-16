@@ -79,4 +79,11 @@ describe("Leave page test cases", () => {
       }
     );
   });
+
+  afterEach(() => {
+    cy.logout()
+    cy.login()
+    PIMPageHelper.deleteUsers(employeeIds)
+    LeavePageHelper.deleteLeaveType(leaveTypeIds)
+  })
 });
