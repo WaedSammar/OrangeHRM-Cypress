@@ -1,3 +1,4 @@
+import { ILeaveRequestData } from "../types/leave";
 import { CommonHelper } from "./common-helper";
 import { HTTP_METHODS } from "./constants";
 
@@ -8,10 +9,10 @@ const URLs = {
 class LeavePageHelper {
   /**
    * add laeve type
-   * @param leavePageInfo
+   * @param {ILeaveRequestData} leavePageInfo
    * @returns
    */
-  addLeaveType(leavePageInfo) {
+  addLeaveType(leavePageInfo: ILeaveRequestData) {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.addLeaveEntitlements,
@@ -26,11 +27,15 @@ class LeavePageHelper {
 
   /**
    * add leave entitlements
-   * @param leavePageInfo
+   * @param {ILeaveRequestData} leavePageInfo
    * @param {number} empNumber
    * @param {number} leaveTypeId
    */
-  addLeaveEntitlements(leavePageInfo, empNumber: number, leaveTypeId: number) {
+  addLeaveEntitlements(
+    leavePageInfo: ILeaveRequestData,
+    empNumber: number,
+    leaveTypeId: number
+  ) {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.addLeaveEntitlements,
