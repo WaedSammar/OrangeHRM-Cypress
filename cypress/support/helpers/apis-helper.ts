@@ -4,6 +4,7 @@ import { HTTP_METHODS, HTTP_STATUS_CODE } from "./constants";
 const URLs = {
   employees: `/api/v2/pim/employees`,
   personalDetails: `/pim/employees/**/personal-details`,
+  feed: `/web/index.php/api/v2/buzz/feed**`,
 };
 
 class APIsHelper {
@@ -14,7 +15,7 @@ class APIsHelper {
       aliasName
     );
   }
-  
+
   static interceptGetEmployeesRequest(aliasName: string) {
     CommonHelper.interceptRequests(URLs.employees, HTTP_METHODS.GET, aliasName);
   }
@@ -26,6 +27,10 @@ class APIsHelper {
     cy.wait(`@${aliasName}`).then((interception) => {
       expect(interception.response.statusCode).to.equal(expectedStatus);
     });
+  }
+
+  static interceptPostFeeds(aliasName: string) {
+    CommonHelper.interceptRequests(URLs.feed, HTTP_METHODS.GET, aliasName);
   }
 }
 export { APIsHelper };
