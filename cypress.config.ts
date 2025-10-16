@@ -5,6 +5,9 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    env: {
+      snapshotOnly: true,
+    },
     baseUrl: "https://opensource-demo.orangehrmlive.com",
   },
   viewportWidth: 1728,
