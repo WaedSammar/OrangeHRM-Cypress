@@ -54,7 +54,7 @@ class CommonHelper {
   }
 
   static cleanup(URL: string, ids: number[]) {
-    this.sendAPIRequest(HTTP_METHODS.DELETE, URL, {
+    return this.sendAPIRequest(HTTP_METHODS.DELETE, URL, {
       ids,
     });
   }
