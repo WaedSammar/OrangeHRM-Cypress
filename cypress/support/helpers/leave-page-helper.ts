@@ -55,6 +55,26 @@ class LeavePageHelper {
   }
 
   /**
+   * add leave entitlements for each employee
+   * @param {ILeaveRequestData} leavePageInfo 
+   * @param {number[]} empNumbers 
+   * @param {number} leaveTypeId 
+   * @returns 
+   */
+  static addLeaveEntitlementsForEachEmployee(leavePageInfo: ILeaveRequestData,
+    empNumbers: number[],
+    leaveTypeId: number): Cypress.Chainable<any> {
+
+    let chain: Cypress.Chainable<any> = cy.wrap(null);
+    empNumbers.forEach((empNumber) => {
+      chain = chain.then(() => {
+        return this.addLeaveEntitlements(leavePageInfo, empNumber, leaveTypeId);
+      })
+    });
+    return chain;
+  }
+
+  /**
    * select leave period
    * @param {ILeaveRequestData} leavePageInfo
    * @returns

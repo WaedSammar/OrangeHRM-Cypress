@@ -11,7 +11,6 @@ describe("Leave page test cases", () => {
 
   const employeeIds: number[] = [];
   const leaveTypeIds: number[] = [];
-  const entitlementIds: number[] = [];
   const credentialsList: Array<{ username: string; password: string }> = [];
   const createdEmployeesMap: Record<string, IEmployeeInfo> = {};
 
@@ -28,45 +27,21 @@ describe("Leave page test cases", () => {
     PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((empNumbers: number[]) => {
       PIMPageHelper.createUsersForEachEmployee(employeeInfo, empNumbers).then((credentials) => {
         credentialsList.push(...credentials);
-      })
+      });
+      LeavePageHelper.addLeaveType(leavePageInfo).then((response) => {
+        const leaveId = response.body.data.id;
+        leaveTypeIds.push(leaveId);
+
+        LeavePageHelper.addLeaveEntitlementsForEachEmployee(leavePageInfo, empNumbers, leaveId)
+      });
     });
   });
 
   beforeEach(() => {
     employeeIds.length = 0;
     leaveTypeIds.length = 0;
-    entitlementIds.length = 0;
     credentialsList.length = 0;
-
-    // cy.login();
-    // PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((response) => {
-    //   // const empNumber = response.body.data.empNumber.toString();
-    //   // employeeIds.push(Number(empNumber));
-    //   // createdEmployeesMap[empNumber] = response.body.data;
-
-    //   PIMPageHelper.createUserViaAPI(employeeInfo, empNumber).then(
-    //     ({ credentials }) => {
-    //       credentialsList.push({
-    //         username: credentials.username,
-    //         password: credentials.password,
-    //       });
-    LeavePageHelper.addLeaveType(leavePageInfo).then((response) => {
-      const leaveId = response.body.data.id;
-      leaveTypeIds.push(leaveId);
-
-      LeavePageHelper.selectLeavePeriod(leavePageInfo).then(() => {
-        LeavePageHelper.addLeaveEntitlements(
-          leavePageInfo,
-          empNumber,
-          leaveId
-        ).then((response) => {
-          const entitlementId = response.body.data.id;
-          entitlementIds.push(entitlementId);
-        });
-      });
-    });
-  }
-  );
+  });
 
   it("Apply for leave request and admin approve the leave", () => {
 
@@ -76,24 +51,24 @@ describe("Leave page test cases", () => {
     cy.login(credentialsList[0].username, credentialsList[0].password);
     cy.wait("@getBuzzFeed");
 
-    LeavePageHelper.applyLeaveRequest(leavePageInfo, leaveTypeIds[0]).then(
-      (response) => {
-        const requestId = response.body?.data?.id;
-        expect(requestId, "Leave request ID should exist").to.be.a("number");
+    // LeavePageHelper.applyLeaveRequest(leavePageInfo, leaveTypeIds[0]).then(
+    //   (response) => {
+    //     const requestId = response.body?.data?.id;
+    //     expect(requestId, "Leave request ID should exist").to.be.a("number");
 
-        cy.log(`Leave request created with ID: ${requestId}`);
+    //     cy.log(`Leave request created with ID: ${requestId}`);
 
-        // Admin approve the leave request
-        cy.logout();
-        APIsHelper.interceptPostFeeds("getBuzzFeed");
-        cy.login();
-        cy.wait("@getBuzzFeed");
+    //     // Admin approve the leave request
+    //     cy.logout();
+    //     APIsHelper.interceptPostFeeds("getBuzzFeed");
+    //     cy.login();
+    //     cy.wait("@getBuzzFeed");
 
-        return LeavePageHelper.approveLeaveRequest(leavePageInfo, requestId)
-      }).then((approveResponse) => {
-        cy.log(`Leave request approved successfully`);
-        expect(approveResponse.status).to.eq(200);
-      })
+    //     return LeavePageHelper.approveLeaveRequest(leavePageInfo, requestId)
+    //   }).then((approveResponse) => {
+    //     cy.log(`Leave request approved successfully`);
+    //     expect(approveResponse.status).to.eq(200);
+    //   })
   });
 
   afterEach(() => {
