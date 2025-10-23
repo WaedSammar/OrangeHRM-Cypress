@@ -1,6 +1,6 @@
-import { ElementHandler } from "../../element-handler";
-import { COMMON_BUTTONS, PAGES } from "../../helpers/constants";
-import { IEmployeeInfo } from "../../types/employee";
+import { ElementHandler } from "../element-handler";
+import { COMMON_BUTTONS, PAGES } from "../helpers/constants";
+import { IEmployeeInfo } from "../types/employee";
 
 enum LABELS {
   EMPLOYEE_NAME = "Employee Name",
