@@ -1,7 +1,7 @@
 import { APIsHelper } from "../../support/helpers/apis-helper";
 import { LeavePageHelper } from "../../support/helpers/leave-page-helper";
 import { PIMPageHelper } from "../../support/helpers/pim-page-helpers";
-import { LeavePage } from "../../support/initializers/pim-page/leave-page";
+import { LeavePage } from "../../support/page-object/leave-page";
 import { IEmployeeInfo } from "../../support/types/employee";
 import { ILeaveRequestData } from "../../support/types/leave";
 
