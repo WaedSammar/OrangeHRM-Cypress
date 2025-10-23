@@ -29,9 +29,8 @@ class PIMInitializer {
    */
   static initializerUserPayload(employeeData: IEmployeeInfo) {
     const payload = {
-      username: employeeData.userName || faker.internet.username(),
-      password:
-        employeeData.password || faker.internet.password({ prefix: "yo12" }),
+      username: faker.internet.username(),
+      password: faker.internet.password({ prefix: "yo12" }),
       status: employeeData.status ?? faker.datatype.boolean(),
       userRoleId: UserRole.ESS,
     };

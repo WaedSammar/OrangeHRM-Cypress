@@ -22,6 +22,12 @@ describe("Leave page test cases", () => {
       employeeMockData = addEmployeeData;
       employeeInfo = structuredClone(employeeMockData);
     });
+  });
+
+  beforeEach(() => {
+    employeeIds.length = 0;
+    leaveTypeIds.length = 0;
+    credentialsList.length = 0;
 
     cy.login();
     PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((empNumbers: number[]) => {
@@ -37,12 +43,6 @@ describe("Leave page test cases", () => {
     });
   });
 
-  beforeEach(() => {
-    employeeIds.length = 0;
-    leaveTypeIds.length = 0;
-    credentialsList.length = 0;
-  });
-
   it("Apply for leave request and admin approve the leave", () => {
 
     // Employee apply for leave request
@@ -50,25 +50,6 @@ describe("Leave page test cases", () => {
     APIsHelper.interceptPostFeeds("getBuzzFeed");
     cy.login(credentialsList[0].username, credentialsList[0].password);
     cy.wait("@getBuzzFeed");
-
-    // LeavePageHelper.applyLeaveRequest(leavePageInfo, leaveTypeIds[0]).then(
-    //   (response) => {
-    //     const requestId = response.body?.data?.id;
-    //     expect(requestId, "Leave request ID should exist").to.be.a("number");
-
-    //     cy.log(`Leave request created with ID: ${requestId}`);
-
-    //     // Admin approve the leave request
-    //     cy.logout();
-    //     APIsHelper.interceptPostFeeds("getBuzzFeed");
-    //     cy.login();
-    //     cy.wait("@getBuzzFeed");
-
-    //     return LeavePageHelper.approveLeaveRequest(leavePageInfo, requestId)
-    //   }).then((approveResponse) => {
-    //     cy.log(`Leave request approved successfully`);
-    //     expect(approveResponse.status).to.eq(200);
-    //   })
   });
 
   afterEach(() => {
