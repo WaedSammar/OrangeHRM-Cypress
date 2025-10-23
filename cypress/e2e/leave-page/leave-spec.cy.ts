@@ -31,13 +31,12 @@ describe("Leave page test cases", () => {
     credentialsList.length = 0;
 
     cy.login();
-    PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 1).then((employees) => {
+    PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((employees) => {
       createdEmployees.push(...employees);
       const empNumbers = employees.map(e => e.empNumber);
 
       PIMPageHelper.createUsersForEachEmployee(createdEmployees).then((credentials) => {
         credentialsList.push(...credentials);
-        console.log(credentialsList)
       });
       LeavePageHelper.addLeaveType(leavePageInfo).then((response) => {
         const leaveId = response.body.data.id;
@@ -59,12 +58,14 @@ describe("Leave page test cases", () => {
       LeavePage.selectLeaveType(leavePageInfo.leaveTypeName);
       LeavePage.selectFromDate(leavePageInfo.leaveRequestFromDate);
       LeavePage.clickApplyForm()
+      cy.wait(6000)
       cy.logout()
-    })
-    cy.login()
+    }).then(() => {
+      cy.login()
 
-    LeavePage.goToLeavePage();
-    LeavePage.approveAllLeaveRequests(createdEmployees);
+      LeavePage.goToLeavePage();
+      LeavePage.approveAllLeaveRequests(createdEmployees);
+    })
   });
 
   afterEach(() => {
