@@ -45,6 +45,30 @@ class PIMPageHelper {
   }
 
   /**
+   * creat n number of employees
+   * @param {IEmployeeInfo} employeeInfo 
+   * @param {number []} employeeIds 
+   * @param {number} count 
+   * @returns 
+   */
+  static createMultipleEmployees(employeeInfo: IEmployeeInfo, employeeIds: number[], count: number = 1):
+    Cypress.Chainable<number[]> {
+    const creationPromises: Array<Promise<number>> = [];
+
+    for (let i = 0; i < count; i++) {
+      const promise = new Promise<number>((resolve) => {
+        this.createEmployeeViaAPI(employeeInfo).then((response) => {
+          const empNumber = response.body.data.empNumber.toString();
+          employeeIds.push(Number(empNumber));
+          resolve(empNumber);
+        })
+      });
+      creationPromises.push(promise);
+    }
+    return cy.wrap(Promise.all(creationPromises));
+  }
+
+  /**
    * add username and password for the employee
    * @param {IEmployeeInfo} employeeInfo
    * @param {number} empNumber
@@ -64,6 +88,22 @@ class PIMPageHelper {
         },
       };
     });
+  }
+
+  /**
+   * create users for each employee
+   * @param {IEmployeeInfo} employeeInfo 
+   * @param {number []} employeeIds 
+   * @returns 
+   */
+  static createUsersForEachEmployee(employeeInfo: IEmployeeInfo, employeeIds: number[]):
+    Cypress.Chainable<Array<{ username: string; password: string }>> {
+    const creationPromises = employeeIds.map((empNumber) => {
+      return this.createUserViaAPI(employeeInfo, empNumber).then((res) => {
+        return res.credentials;
+      });
+    })
+    return cy.wrap(Promise.all(creationPromises)) as Cypress.Chainable<Array<{ username: string; password: string }>>;
   }
 
   /**

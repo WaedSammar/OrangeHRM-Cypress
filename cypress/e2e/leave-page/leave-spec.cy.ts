@@ -23,6 +23,13 @@ describe("Leave page test cases", () => {
       employeeMockData = addEmployeeData;
       employeeInfo = structuredClone(employeeMockData);
     });
+
+    cy.login();
+    PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((empNumbers: number[]) => {
+      PIMPageHelper.createUsersForEachEmployee(employeeInfo, empNumbers).then((credentials) => {
+        credentialsList.push(...credentials);
+      })
+    });
   });
 
   beforeEach(() => {
@@ -31,37 +38,35 @@ describe("Leave page test cases", () => {
     entitlementIds.length = 0;
     credentialsList.length = 0;
 
-    cy.login();
-    PIMPageHelper.createEmployeeViaAPI(employeeInfo).then((response) => {
-      const empNumber = response.body.data.empNumber.toString();
-      employeeIds.push(Number(empNumber));
-      createdEmployeesMap[empNumber] = response.body.data;
+    // cy.login();
+    // PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 5).then((response) => {
+    //   // const empNumber = response.body.data.empNumber.toString();
+    //   // employeeIds.push(Number(empNumber));
+    //   // createdEmployeesMap[empNumber] = response.body.data;
 
-      PIMPageHelper.createUserViaAPI(employeeInfo, empNumber).then(
-        ({ credentials }) => {
-          credentialsList.push({
-            username: credentials.username,
-            password: credentials.password,
-          });
-          LeavePageHelper.addLeaveType(leavePageInfo).then((response) => {
-            const leaveId = response.body.data.id;
-            leaveTypeIds.push(leaveId);
+    //   PIMPageHelper.createUserViaAPI(employeeInfo, empNumber).then(
+    //     ({ credentials }) => {
+    //       credentialsList.push({
+    //         username: credentials.username,
+    //         password: credentials.password,
+    //       });
+    LeavePageHelper.addLeaveType(leavePageInfo).then((response) => {
+      const leaveId = response.body.data.id;
+      leaveTypeIds.push(leaveId);
 
-            LeavePageHelper.selectLeavePeriod(leavePageInfo).then(() => {
-              LeavePageHelper.addLeaveEntitlements(
-                leavePageInfo,
-                empNumber,
-                leaveId
-              ).then((response) => {
-                const entitlementId = response.body.data.id;
-                entitlementIds.push(entitlementId);
-              });
-            });
-          });
-        }
-      );
+      LeavePageHelper.selectLeavePeriod(leavePageInfo).then(() => {
+        LeavePageHelper.addLeaveEntitlements(
+          leavePageInfo,
+          empNumber,
+          leaveId
+        ).then((response) => {
+          const entitlementId = response.body.data.id;
+          entitlementIds.push(entitlementId);
+        });
+      });
     });
-  });
+  }
+  );
 
   it("Apply for leave request and admin approve the leave", () => {
 
