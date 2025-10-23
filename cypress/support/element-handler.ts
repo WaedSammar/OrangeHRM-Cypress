@@ -15,6 +15,14 @@ enum DROP_DOWN {
 }
 
 class ElementHandler {
+  private static LOCATORS = {
+    inputGroup: '.oxd-input-group',
+    selectField: '.oxd-select-text',
+    dropdownOption: '.oxd-select-dropdown',
+    dateInput: `${HTML_TAGS.input}[placeholder='yyyy-dd-mm']`,
+    closeCalenderBtn: '.--close',
+  }
+
   /**
    * click on the selected page
    * @param {string} label - label name
@@ -60,6 +68,26 @@ class ElementHandler {
    */
   static clearAndFill(label: string, text: string) {
     this.findInputByLabel(label).clear().type(text);
+  }
+
+  /**
+    * select option from dropdown
+    * @param {string} label - label for input text
+    * @param {string} option - option to select
+    */
+  static selectDropdownByLabel(label: string, option: string) {
+    cy.contains(HTML_TAGS.label, label).parents(this.LOCATORS.inputGroup).find(this.LOCATORS.selectField).click()
+    cy.get(this.LOCATORS.dropdownOption).contains(option).click()
+  }
+
+  /**
+   * select date from calender and close it
+   * @param {string} date
+   * @param {number} index
+   */
+  static selectDate(date: string, index: number = 0) {
+    cy.get(this.LOCATORS.dateInput).eq(index).should('be.visible').clear().type(date)
+    cy.get(this.LOCATORS.closeCalenderBtn).should('be.visible').click()
   }
 
   /**
