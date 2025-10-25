@@ -16,7 +16,7 @@ class LeaveInitializer {
       name:
         `${leavePageInfo.leaveTypeName} ${Date.now()}` ||
         `${faker.word.adjective()} Leave`,
-      situational: leavePageInfo.leaveSituational ?? faker.datatype.boolean(),
+      situational: leavePageInfo.leaveSituational,
     };
     return payload;
   }

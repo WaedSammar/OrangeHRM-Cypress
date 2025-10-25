@@ -44,13 +44,13 @@ class LeavePage {
   }
 
   static approveLeaveRequest() {
-    ElementHandler.clickButton("Approve");
+    ElementHandler.clickButton(COMMON_BUTTONS.APPROVE);
   }
 
   static approveAllLeaveRequests(employeesData: IEmployeeInfo[]) {
-    employeesData.forEach((employee) => {
+    cy.wrap(employeesData).each((employee: IEmployeeInfo) => {
       this.typeEmployeeHint(employee.firstName);
-      this.clickSearch()
+      this.clickSearch();
       this.approveLeaveRequest();
     });
   }

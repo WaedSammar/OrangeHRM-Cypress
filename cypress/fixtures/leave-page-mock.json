@@ -1,6 +1,6 @@
 {
   "leaveTypeName": "Casual Leave",
-  "leaveSituational": false,
+  "leaveSituational": true,
   "entitlementDuration": 5,
   "entitlementFromDate": "2025-01-01",
   "entitlementEndDate": "2025-12-31",
