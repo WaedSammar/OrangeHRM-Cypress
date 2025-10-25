@@ -35,7 +35,9 @@ class LeavePage {
   }
 
   static typeEmployeeHint(firstName: string) {
-    ElementHandler.findInputByLabel(LABELS.EMPLOYEE_NAME).type(firstName);
+    const input = ElementHandler.findInputByLabel(LABELS.EMPLOYEE_NAME);
+    input.clear();
+    input.type(firstName);
     cy.get(this.LOCATORS.autoCompleteDropdown).contains(firstName).click();
   }
 

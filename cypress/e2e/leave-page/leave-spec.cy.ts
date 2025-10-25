@@ -31,7 +31,7 @@ describe("Leave page test cases", () => {
     credentialsList.length = 0;
 
     cy.login();
-    PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 1).then((employees) => {
+    PIMPageHelper.createMultipleEmployees(employeeInfo, employeeIds, 2).then((employees) => {
       createdEmployees.push(...employees);
       const empNumbers = employees.map(e => e.empNumber);
 
@@ -55,7 +55,6 @@ describe("Leave page test cases", () => {
       cy.wait("@getBuzzFeed");
       LeavePage.goToLeavePage();
       LeavePage.clickApply();
-      cy.wait(2000)
       LeavePage.selectLeaveType(leavePageInfo.leaveTypeName);
       LeavePage.selectFromDate(leavePageInfo.leaveRequestFromDate);
       LeavePage.clickApplyForm()
