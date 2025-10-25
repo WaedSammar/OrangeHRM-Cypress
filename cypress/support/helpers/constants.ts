@@ -35,4 +35,5 @@ export enum COMMON_BUTTONS {
   SAVE = "Save",
   APPLY = "Apply",
   SEARCH = "Search",
+  APPROVE = "Approve",
 }
