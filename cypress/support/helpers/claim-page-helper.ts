@@ -1,3 +1,4 @@
+import { IExpenseType } from "../apis/response/claim-page/claim";
 import { IClaimRequest } from "../types/claim-request";
 import { CommonHelper } from "./common-helper";
 import { HTTP_METHODS } from "./constants";
@@ -27,6 +28,35 @@ class ClaimPageHelper {
       payload,
     );
   }
+
+  /***
+   * create multiple expense types
+   * @param {IClaimRequest} claimPageInfo
+   */
+  static createMultipleExpenseTypes(claimPageInfo: IClaimRequest) {
+    const createdExpenseMap: Record<string, IExpenseType> = {};
+    const expenseIds: number[] = [];
+    const expenses = claimPageInfo.multipleExpenses ?? [];
+
+    let chain: Cypress.Chainable<any> = cy.wrap(null);
+
+    expenses.forEach(exp => {
+      chain = chain.then(() => {
+        return ClaimPageHelper.createExpenseType({
+          ...claimPageInfo,
+          expenseTypeName: exp.name,
+          expenseTypeDesc: exp.desc,
+        }).then(res => {
+          const id = res.body.data.id;
+          expenseIds.push(id);
+          createdExpenseMap[id] = res.body.data;
+        });
+      });
+    });
+
+    return chain.then(() => ({ createdExpenseMap, expenseIds }));
+  }
+
 
   /**
    * create expense type

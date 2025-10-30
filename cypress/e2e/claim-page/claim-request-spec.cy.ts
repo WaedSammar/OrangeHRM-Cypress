@@ -54,49 +54,91 @@ describe("Claim Page Test Cases", () => {
                 eventIds.push(eventId);
                 createdEventMap[eventId] = eventResponse.body.data;
 
-                ClaimPageHelper.createExpenseType(claimPageInfo).then(
-                  (expenseResponse) => {
-                    const expenseId = expenseResponse.body.data.id;
-                    expenseIds.push(expenseId);
-                    createdExpenseMap[expenseId] = expenseResponse.body.data;
+                ClaimPageHelper.createMultipleExpenseTypes(claimPageInfo).then(
+                  ({ createdExpenseMap: map, expenseIds: ids }) => {
+                    Object.assign(createdExpenseMap, map);
+                    expenseIds.push(...ids);
                   });
               });
           });
       });
   });
 
-  it("submit 3 claims with 3 different currencies, add expense with 3 different types and approve it by admin", () => {
+  it("employee submits 3 claims (different currencies & expenses), admin approves/rejects/ignores", () => {
     const employeeData = createdEmployeesMap[employeeIds[0].toString()];
-    const eventData = createdEventMap[eventIds[0]];
-    const expenseData = createdExpenseMap[expenseIds[0]];
+    const currencies = claimPageInfo.multipleCurrencies!;
+    const expenses = claimPageInfo.multipleExpenses!;
+
+    const results: {
+      eventName: string;
+      currency: string;
+      expense: string;
+      statusAfterAdmin: string;
+    }[] = [];
 
     cy.logout();
     cy.login(credentialsList[0].username, credentialsList[0].password);
 
+    //approve claim request
     ClaimPage.goToClaimPage();
-    ClaimPage.applyClaimRequest(eventData.name, claimPageInfo.currencyType);
-    ClaimPage.addExpense(claimPageInfo, expenseData.name);
+    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[0]);
+    ClaimPage.addExpense(claimPageInfo, expenses[0].name);
     ClaimPage.clickSubmitBtn();
+    results.push({
+      eventName: createdEventMap[eventIds[0]].name,
+      currency: currencies[0],
+      expense: expenses[0].name,
+      statusAfterAdmin: claimPageInfo.requestStatusAfterApproved,
+    });
+
+    //reject claim request
+    ClaimPage.goToClaimPage();
+    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[1]);
+    ClaimPage.addExpense(claimPageInfo, expenses[1].name);
+    ClaimPage.clickSubmitBtn();
+    results.push({
+      eventName: createdEventMap[eventIds[0]].name,
+      currency: currencies[1],
+      expense: expenses[1].name,
+      statusAfterAdmin: claimPageInfo.requestStatusAfterRejected,
+    });
+
+    //no actions on claim request
+    ClaimPage.goToClaimPage();
+    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[2]);
+    ClaimPage.addExpense(claimPageInfo, expenses[2].name);
+    ClaimPage.clickSubmitBtn();
+    results.push({
+      eventName: createdEventMap[eventIds[0]].name,
+      currency: currencies[2],
+      expense: expenses[2].name,
+      statusAfterAdmin: claimPageInfo.claimRequestStatus,
+    });
 
     cy.logout();
     cy.login();
     ClaimPage.goToClaimPage();
-    const data = {
+
+    // accept first claim
+    const dataApprove = {
       [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
-      [CLAIM_TABLE_HEADERS.EVENT_NAME]: eventData.name,
+      [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[0].eventName,
+      [CLAIM_TABLE_HEADERS.CURRENCY]: results[0].currency,
       [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
     };
-    ClaimPage.clickAllowAction(data);
+    ClaimPage.clickAllowAction(dataApprove);
     ClaimPage.clickApprove();
-
-    cy.logout();
-    cy.login(credentialsList[0].username, credentialsList[0].password);
     ClaimPage.goToClaimPage();
-    const requestInfo = {
-      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.requestStatusAfterApproved,
-      [CLAIM_TABLE_HEADERS.AMOUNT]: claimPageInfo.expenseAmount,
+
+    // reject second claim
+    const dataReject = {
+      [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
+      [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[1].eventName,
+      [CLAIM_TABLE_HEADERS.CURRENCY]: results[1].currency,
+      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
     };
-    ClaimPage.verifyInfoInClaimTable(requestInfo);
+    ClaimPage.clickAllowAction(dataReject);
+    ClaimPage.clickReject();
   });
 
   afterEach(() => {
