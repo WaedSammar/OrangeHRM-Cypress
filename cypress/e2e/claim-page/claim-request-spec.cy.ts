@@ -58,14 +58,10 @@ describe("Claim Page Test Cases", () => {
                     const expenseId = expenseResponse.body.data.id;
                     expenseIds.push(expenseId);
                     createdExpenseMap[expenseId] = expenseResponse.body.data;
-                  },
-                );
-              },
-            );
-          },
-        );
-      },
-    );
+                  });
+              });
+          });
+      });
   });
 
   it("submit 3 claims with 3 different currencies, add expense with 3 different types and approve it by admin", () => {
