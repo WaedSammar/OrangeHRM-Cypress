@@ -52,7 +52,6 @@ declare global {
 
 Cypress.Commands.add("login", (username = "admin", password = "admin123") => {
   cy.visit("/web/index.php/auth/login");
-  cy.wait(8000)
   cy.get(`input[name="username"]`).type(username);
   cy.get(`input[name="password"]`).type(password);
   cy.get(`button[type="submit"]`).click();
