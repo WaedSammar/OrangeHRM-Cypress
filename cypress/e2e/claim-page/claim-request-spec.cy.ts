@@ -98,4 +98,10 @@ describe("Claim Page Test Cases", () => {
     };
     ClaimPage.verifyInfoInClaimTable(requestInfo);
   });
+
+  afterEach(() => {
+    PIMPageHelper.deleteUsers(employeeIds)
+    ClaimPageHelper.deleteEventType(eventIds)
+    ClaimPageHelper.deleteExpenseType(expenseIds)
+  })
 });
