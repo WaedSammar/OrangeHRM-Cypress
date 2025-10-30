@@ -100,6 +100,8 @@ describe("Claim Page Test Cases", () => {
   });
 
   afterEach(() => {
+    cy.logout()
+    cy.login()
     PIMPageHelper.deleteUsers(employeeIds)
     ClaimPageHelper.deleteEventType(eventIds)
     ClaimPageHelper.deleteExpenseType(expenseIds)
