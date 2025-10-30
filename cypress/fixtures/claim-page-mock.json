@@ -9,5 +9,25 @@
   "claimRequestStatus": "Submitted",
   "expenseDate": "2027-12-07",
   "expenseAmount": "500.00",
-  "requestStatusAfterApproved": "Paid"
+  "requestStatusAfterApproved": "Paid",
+  "requestStatusAfterRejected": "Rejected",
+  "multipleCurrencies": [
+    "United States Dollar",
+    "Euro",
+    "Japanese Yen"
+  ],
+  "multipleExpenses": [
+    {
+      "name": "Transportation",
+      "desc": "transportation"
+    },
+    {
+      "name": "Accommodation",
+      "desc": "accommodation"
+    },
+    {
+      "name": "Meals",
+      "desc": "meals"
+    }
+  ]
 }

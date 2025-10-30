@@ -4,6 +4,7 @@ import {
 } from "../../support/apis/response/claim-page/claim";
 import { ClaimPageHelper } from "../../support/helpers/claim-page-helper";
 import { PIMPageHelper } from "../../support/helpers/pim-page-helpers";
+import { CLAIM_TABLE_HEADERS, ClaimPage } from "../../support/page-object/claim-page";
 import { IClaimRequest } from "../../support/types/claim-request";
 import { IEmployeeInfo } from "../../support/types/employee";
 
@@ -65,6 +66,36 @@ describe("Claim Page Test Cases", () => {
   });
 
   it("submit 3 claims with 3 different currencies, add expense with 3 different types and approve it by admin", () => {
-    
+    const employeeData = createdEmployeesMap[employeeIds[0].toString()];
+    const eventData = createdEventMap[eventIds[0]];
+    const expenseData = createdExpenseMap[expenseIds[0]];
+
+    cy.logout();
+    cy.login(credentialsList[0].username, credentialsList[0].password);
+
+    ClaimPage.goToClaimPage();
+    ClaimPage.applyClaimRequest(eventData.name, claimPageInfo.currencyType);
+    ClaimPage.addExpense(claimPageInfo, expenseData.name);
+    ClaimPage.clickSubmitBtn();
+
+    cy.logout();
+    cy.login();
+    ClaimPage.goToClaimPage();
+    const data = {
+      [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
+      [CLAIM_TABLE_HEADERS.EVENT_NAME]: eventData.name,
+      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
+    };
+    ClaimPage.clickAllowAction(data);
+    ClaimPage.clickApprove();
+
+    cy.logout();
+    cy.login(credentialsList[0].username, credentialsList[0].password);
+    ClaimPage.goToClaimPage();
+    const requestInfo = {
+      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.requestStatusAfterApproved,
+      [CLAIM_TABLE_HEADERS.AMOUNT]: claimPageInfo.expenseAmount,
+    };
+    ClaimPage.verifyInfoInClaimTable(requestInfo);
   });
 });

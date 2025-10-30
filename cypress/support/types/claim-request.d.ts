@@ -10,4 +10,10 @@ export interface IClaimRequest {
   expenseDate: string;
   expenseAmount: string;
   requestStatusAfterApproved: string;
+  requestStatusAfterRejected: string;
+  multipleExpenses?: Array<{
+    name: string;
+    desc: string;
+  }>;
+  multipleCurrencies?: string[];
 }
