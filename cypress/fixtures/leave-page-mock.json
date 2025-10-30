@@ -1,0 +1,13 @@
+{
+  "leaveTypeName": "Casual Leave",
+  "leaveSituational": true,
+  "entitlementDuration": 5,
+  "entitlementFromDate": "2025-01-01",
+  "entitlementEndDate": "2025-12-31",
+  "leavePerStartedDay": 1,
+  "leavePerStartedMonth": 1,
+  "leaveRequestComment": "Emergency",
+  "leaveRequestFromDate": "2025-10-1",
+  "leaveRequestEndDate": "2025-07-25",
+  "leaveRequestStatus": "APPROVE"
+}

@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import { COMMON_LOCATORS, DROP_DOWN } from "./element-handler";
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -42,6 +45,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(username?: string, password?: string): Chainable<void>;
+      logout(): Chainable<void>;
     }
   }
 }
@@ -51,4 +55,9 @@ Cypress.Commands.add("login", (username = "admin", password = "admin123") => {
   cy.get(`input[name="username"]`).type(username);
   cy.get(`input[name="password"]`).type(password);
   cy.get(`button[type="submit"]`).click();
+});
+
+Cypress.Commands.add("logout", () => {
+  cy.get(COMMON_LOCATORS.dropDownList).click();
+  cy.get(COMMON_LOCATORS.dropDownMenu).contains(DROP_DOWN.LOGOUT).click();
 });

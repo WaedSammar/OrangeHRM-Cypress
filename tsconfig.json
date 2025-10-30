@@ -5,7 +5,9 @@
     "types": ["cypress", "node"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "preserveValueImports": false
+    "preserveValueImports": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["cypress/**/*.ts"]
 }

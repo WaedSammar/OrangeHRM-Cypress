@@ -4,5 +4,6 @@
   "lastName": "Kmail",
   "employeeId": "7404",
   "userName": "Yousef",
-  "password": "yo12345"
+  "password": "yo12345",
+  "status": true
 }
