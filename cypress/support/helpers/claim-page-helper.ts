@@ -24,7 +24,7 @@ class ClaimPageHelper {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.eventType,
-      payload
+      payload,
     );
   }
 
@@ -42,7 +42,7 @@ class ClaimPageHelper {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.expenseType,
-      payload
+      payload,
     );
   }
 

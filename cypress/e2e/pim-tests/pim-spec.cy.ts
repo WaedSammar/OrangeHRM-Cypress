@@ -41,7 +41,7 @@ describe("Employee management - Add and Save Test Cases", () => {
 
     const createLoadPersonalDetails = CommonHelper.generateRandomString(
       7,
-      "loadPersonalDetails"
+      "loadPersonalDetails",
     );
     APIsHelper.interceptGetEmployeeDetailsRequest(createLoadPersonalDetails);
     PIMPage.clickSave();
@@ -50,7 +50,7 @@ describe("Employee management - Add and Save Test Cases", () => {
     PIMPageHelper.getEmpNumberByEmployeeId(employeeInfo.employeeId).then(
       (empNumber) => {
         employeeNum.push(empNumber);
-      }
+      },
     );
   });
 
@@ -61,7 +61,7 @@ describe("Employee management - Add and Save Test Cases", () => {
         LeavePageHelper.addLeaveEntitlements(
           leavePageInfo,
           employeeNum[i],
-          leaveIds[0]
+          leaveIds[0],
         );
       });
     }

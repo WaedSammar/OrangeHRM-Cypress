@@ -28,15 +28,25 @@ class LeaveInitializer {
    * @param {number} leaveTypeId
    * @returns
    */
-  static initializerAddEntitlements(leavePageInfo: ILeaveRequestData, empNumber: number, leaveTypeId: number) {
+  static initializerAddEntitlements(
+    leavePageInfo: ILeaveRequestData,
+    empNumber: number,
+    leaveTypeId: number,
+  ) {
     const payload = {
       empNumber,
-      entitlement: leavePageInfo.entitlementDuration || faker.number.int({ min: 1, max: 30 }),
-      fromDate: leavePageInfo.entitlementFromDate || CHANGE_DATE_FORMAT(faker.date.future()),
+      entitlement:
+        leavePageInfo.entitlementDuration ||
+        faker.number.int({ min: 1, max: 30 }),
+      fromDate:
+        leavePageInfo.entitlementFromDate ||
+        CHANGE_DATE_FORMAT(faker.date.future()),
       leaveTypeId,
-      toDate: leavePageInfo.entitlementEndDate || CHANGE_DATE_FORMAT(faker.date.future())
-    }
-    return payload
+      toDate:
+        leavePageInfo.entitlementEndDate ||
+        CHANGE_DATE_FORMAT(faker.date.future()),
+    };
+    return payload;
   }
 
   /**
@@ -46,10 +56,14 @@ class LeaveInitializer {
    */
   static initializerSelectLeavePeriod(leavePageInfo: ILeaveRequestData) {
     const payload = {
-      startDay: leavePageInfo.leavePerStartedDay || faker.number.int({ min: 1, max: 28 }),
-      startMonth: leavePageInfo.leavePerStartedMonth || faker.number.int({ min: 1, max: 12 })
-    }
-    return payload
+      startDay:
+        leavePageInfo.leavePerStartedDay ||
+        faker.number.int({ min: 1, max: 28 }),
+      startMonth:
+        leavePageInfo.leavePerStartedMonth ||
+        faker.number.int({ min: 1, max: 12 }),
+    };
+    return payload;
   }
 
   /**
@@ -58,14 +72,21 @@ class LeaveInitializer {
    * @param {number} leaveTypeId
    * @returns
    */
-  static initializerApplyLeaveRequest(leavePageInfo: ILeaveRequestData, leaveTypeId: number) {
+  static initializerApplyLeaveRequest(
+    leavePageInfo: ILeaveRequestData,
+    leaveTypeId: number,
+  ) {
     const payload = {
       comment: leavePageInfo.leaveRequestComment || faker.lorem.sentence(),
-      fromDate: leavePageInfo.leaveRequestFromDate || CHANGE_DATE_FORMAT(faker.date.future()),
+      fromDate:
+        leavePageInfo.leaveRequestFromDate ||
+        CHANGE_DATE_FORMAT(faker.date.future()),
       leaveTypeId,
-      toDate: leavePageInfo.leaveRequestEndDate || CHANGE_DATE_FORMAT(faker.date.future())
-    }
-    return payload
+      toDate:
+        leavePageInfo.leaveRequestEndDate ||
+        CHANGE_DATE_FORMAT(faker.date.future()),
+    };
+    return payload;
   }
 }
 export { LeaveInitializer };

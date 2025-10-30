@@ -16,12 +16,12 @@ enum DROP_DOWN {
 
 class ElementHandler {
   private static LOCATORS = {
-    inputGroup: '.oxd-input-group',
-    selectField: '.oxd-select-text',
-    dropdownOption: '.oxd-select-dropdown',
+    inputGroup: ".oxd-input-group",
+    selectField: ".oxd-select-text",
+    dropdownOption: ".oxd-select-dropdown",
     dateInput: `${HTML_TAGS.input}[placeholder='yyyy-dd-mm']`,
-    closeCalenderBtn: '.--close',
-  }
+    closeCalenderBtn: ".--close",
+  };
 
   /**
    * click on the selected page
@@ -71,13 +71,16 @@ class ElementHandler {
   }
 
   /**
-    * select option from dropdown
-    * @param {string} label - label for input text
-    * @param {string} option - option to select
-    */
+   * select option from dropdown
+   * @param {string} label - label for input text
+   * @param {string} option - option to select
+   */
   static selectDropdownByLabel(label: string, option: string) {
-    cy.contains(HTML_TAGS.label, label).parents(this.LOCATORS.inputGroup).find(this.LOCATORS.selectField).click()
-    cy.get(this.LOCATORS.dropdownOption).contains(option).click()
+    cy.contains(HTML_TAGS.label, label)
+      .parents(this.LOCATORS.inputGroup)
+      .find(this.LOCATORS.selectField)
+      .click();
+    cy.get(this.LOCATORS.dropdownOption).contains(option).click();
   }
 
   /**
@@ -86,8 +89,12 @@ class ElementHandler {
    * @param {number} index
    */
   static selectDate(date: string, index: number = 0) {
-    cy.get(this.LOCATORS.dateInput).eq(index).should('be.visible').clear().type(date)
-    cy.get(this.LOCATORS.closeCalenderBtn).should('be.visible').click()
+    cy.get(this.LOCATORS.dateInput)
+      .eq(index)
+      .should("be.visible")
+      .clear()
+      .type(date);
+    cy.get(this.LOCATORS.closeCalenderBtn).should("be.visible").click();
   }
 
   /**
@@ -96,7 +103,7 @@ class ElementHandler {
    */
   static clickSave(
     index: number = 0,
-    buttonText: string = COMMON_BUTTONS.SAVE
+    buttonText: string = COMMON_BUTTONS.SAVE,
   ) {
     cy.get(COMMON_LOCATORS.submitBtn).eq(index).click().contains(buttonText);
   }

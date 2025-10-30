@@ -15,16 +15,16 @@ class PIMPageHelper {
    * @returns
    */
   static getEmpNumberByEmployeeId(
-    employeeId: string
+    employeeId: string,
   ): Cypress.Chainable<number | null> {
     return CommonHelper.sendAPIRequest(HTTP_METHODS.GET, URLs.employees).then(
       (response) => {
         const employees = response.body.data;
         const matchedEmployee = employees.find(
-          (emp) => emp.employeeId === employeeId
+          (emp) => emp.employeeId === employeeId,
         );
         return matchedEmployee ? matchedEmployee.empNumber : null;
-      }
+      },
     );
   }
 
@@ -38,7 +38,7 @@ class PIMPageHelper {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.employees,
-      payload
+      payload,
     ).then((response) => {
       return response;
     });
@@ -46,13 +46,16 @@ class PIMPageHelper {
 
   /**
    * creat n number of employees
-   * @param {IEmployeeInfo} employeeInfo 
-   * @param {number []} employeeIds 
-   * @param {number} count 
-   * @returns 
+   * @param {IEmployeeInfo} employeeInfo
+   * @param {number []} employeeIds
+   * @param {number} count
+   * @returns
    */
-  static createMultipleEmployees(employeeInfo: IEmployeeInfo, employeeIds: number[], count: number = 1):
-    Cypress.Chainable<IEmployeeInfo[]> {
+  static createMultipleEmployees(
+    employeeInfo: IEmployeeInfo,
+    employeeIds: number[],
+    count: number = 1,
+  ): Cypress.Chainable<IEmployeeInfo[]> {
     const creationPromises: Array<Promise<IEmployeeInfo>> = [];
 
     for (let i = 0; i < count; i++) {
@@ -61,7 +64,7 @@ class PIMPageHelper {
           const empData = response.body.data;
           employeeIds.push(Number(empData.empNumber));
           resolve(empData);
-        })
+        });
       });
       creationPromises.push(promise);
     }
@@ -92,12 +95,12 @@ class PIMPageHelper {
 
   /**
    * create users for each employee
-   * @param {IEmployeeInfo} employeeInfo 
-   * @param {number []} employeeIds 
-   * @returns 
+   * @param {IEmployeeInfo} employeeInfo
+   * @param {number []} employeeIds
+   * @returns
    */
   static createUsersForEachEmployee(
-    employees: IEmployeeInfo[]
+    employees: IEmployeeInfo[],
   ): Cypress.Chainable<Array<{ username: string; password: string }>> {
     const creationPromises = employees.map((emp) => {
       return new Promise<{ username: string; password: string }>((resolve) => {
