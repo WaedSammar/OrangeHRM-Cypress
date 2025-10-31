@@ -18,9 +18,9 @@ class ClaimPageHelper {
    */
   static createEventType(claimPageInfo: IClaimRequest) {
     const payload = {
-      description: claimPageInfo.expenseTypeDesc,
-      name: claimPageInfo.expenseTypeName,
-      status: claimPageInfo.expenseTypeStatus,
+      description: claimPageInfo.eventTypeDescription,
+      name: claimPageInfo.eventTypeName,
+      status: claimPageInfo.eventTypeStatus,
     };
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,

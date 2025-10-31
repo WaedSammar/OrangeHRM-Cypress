@@ -68,79 +68,45 @@ describe("Claim Page Test Cases", () => {
     const employeeData = createdEmployeesMap[employeeIds[0].toString()];
     const currencies = claimPageInfo.multipleCurrencies!;
     const expenses = claimPageInfo.multipleExpenses!;
-
-    const results: {
-      eventName: string;
-      currency: string;
-      expense: string;
-      statusAfterAdmin: string;
-    }[] = [];
+    const eventName = createdEventMap[eventIds[0]].name;
 
     cy.logout();
     cy.login(credentialsList[0].username, credentialsList[0].password);
 
-    //approve claim request
-    ClaimPage.goToClaimPage();
-    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[0]);
-    ClaimPage.addExpense(claimPageInfo, expenses[0].name);
-    ClaimPage.clickSubmitBtn();
-    results.push({
-      eventName: createdEventMap[eventIds[0]].name,
-      currency: currencies[0],
-      expense: expenses[0].name,
-      statusAfterAdmin: claimPageInfo.requestStatusAfterApproved,
+    ClaimPage.applyMultipleClaimRequests(
+      eventName,
+      claimPageInfo,
+      currencies,
+      expenses
+    ).then((results) => {
+
+      cy.logout();
+      cy.login();
+      ClaimPage.goToClaimPage();
+
+      // accept first claim
+      const dataApprove = {
+        [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
+        [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[0].eventName,
+        [CLAIM_TABLE_HEADERS.CURRENCY]: results[0].currency,
+        [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
+      };
+      ClaimPage.clickAllowAction(dataApprove);
+      ClaimPage.clickApprove();
+      ClaimPage.goToClaimPage();
+
+      // reject second claim
+      const dataReject = {
+        [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
+        [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[1].eventName,
+        [CLAIM_TABLE_HEADERS.CURRENCY]: results[1].currency,
+        [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
+      };
+      ClaimPage.clickAllowAction(dataReject);
+      ClaimPage.clickReject();
     });
-
-    //reject claim request
-    ClaimPage.goToClaimPage();
-    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[1]);
-    ClaimPage.addExpense(claimPageInfo, expenses[1].name);
-    ClaimPage.clickSubmitBtn();
-    results.push({
-      eventName: createdEventMap[eventIds[0]].name,
-      currency: currencies[1],
-      expense: expenses[1].name,
-      statusAfterAdmin: claimPageInfo.requestStatusAfterRejected,
-    });
-
-    //no actions on claim request
-    ClaimPage.goToClaimPage();
-    ClaimPage.applyClaimRequest(createdEventMap[eventIds[0]].name, currencies[2]);
-    ClaimPage.addExpense(claimPageInfo, expenses[2].name);
-    ClaimPage.clickSubmitBtn();
-    results.push({
-      eventName: createdEventMap[eventIds[0]].name,
-      currency: currencies[2],
-      expense: expenses[2].name,
-      statusAfterAdmin: claimPageInfo.claimRequestStatus,
-    });
-
-    cy.logout();
-    cy.login();
-    ClaimPage.goToClaimPage();
-
-    // accept first claim
-    const dataApprove = {
-      [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
-      [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[0].eventName,
-      [CLAIM_TABLE_HEADERS.CURRENCY]: results[0].currency,
-      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
-    };
-    ClaimPage.clickAllowAction(dataApprove);
-    ClaimPage.clickApprove();
-    ClaimPage.goToClaimPage();
-
-    // reject second claim
-    const dataReject = {
-      [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
-      [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[1].eventName,
-      [CLAIM_TABLE_HEADERS.CURRENCY]: results[1].currency,
-      [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
-    };
-    ClaimPage.clickAllowAction(dataReject);
-    ClaimPage.clickReject();
-  });
-
+  })
+  
   afterEach(() => {
     cy.logout()
     cy.login()

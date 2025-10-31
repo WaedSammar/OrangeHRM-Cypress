@@ -123,6 +123,47 @@ class ClaimPage {
   }
 
   /**
+ * apply multiple claim requests with different currencies and expenses
+ */
+static applyMultipleClaimRequests(
+  eventName: string,
+  claimPageInfo: IClaimRequest,
+  currencies: string[],
+  expenses: { name: string }[]
+) {
+  const results: {
+    eventName: string
+    currency: string
+    expense: string
+    statusAfterAdmin: string
+  }[] = []
+
+  currencies.forEach((currency, index) => {
+    this.goToClaimPage()
+    this.applyClaimRequest(eventName, currency)
+    this.addExpense(claimPageInfo, expenses[index].name)
+    this.clickSubmitBtn()
+
+    const statusAfterAdmin =
+      index === 0
+        ? claimPageInfo.requestStatusAfterApproved
+        : index === 1
+        ? claimPageInfo.requestStatusAfterRejected
+        : claimPageInfo.claimRequestStatus
+
+    results.push({
+      eventName,
+      currency,
+      expense: expenses[index].name,
+      statusAfterAdmin,
+    })
+  })
+
+  return cy.wrap(results)
+}
+
+
+  /**
    * click allow action in table
    * @param data
    */
