@@ -33,7 +33,7 @@ class PIMPageHelper {
    * @param {IEmployeeInfo} employeeInfo
    * @returns
    */
-  static createEmployeeViaAPI(employeeInfo: IEmployeeInfo) {
+  static createEmployeeViaAPI(employeeInfo?: IEmployeeInfo) {
     const payload = PIMInitializer.initializerEmployeePayload(employeeInfo);
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
