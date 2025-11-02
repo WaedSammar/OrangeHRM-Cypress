@@ -8,7 +8,7 @@ import { CLAIM_TABLE_HEADERS, ClaimPage } from "../../support/page-object/claim-
 import { IClaimRequest } from "../../support/types/claim-request";
 import { IEmployeeInfo } from "../../support/types/employee";
 
-describe("Claim Page Test Cases", () => {
+describe("Claim Page Test Cases: employee submits 3 claims (different currencies & expenses), admin approves/rejects/ignores", () => {
   let claimPageInfo: IClaimRequest,
     employeeMockData: IEmployeeInfo,
     employeeInfo: IEmployeeInfo;
@@ -19,6 +19,11 @@ describe("Claim Page Test Cases", () => {
   let credentialsList: { username: string; password: string }[] = [];
   let eventIds: number[] = [];
   let expenseIds: number[] = [];
+
+  let employeeData: IEmployeeInfo;
+  let currencies: string[];
+  let expenses: { name: string; }[];
+  let eventName: string;
 
   before(() => {
     cy.fixture("employee-page-mock").then((addEmployeeData) => {
@@ -38,8 +43,8 @@ describe("Claim Page Test Cases", () => {
     cy.login();
     PIMPageHelper.createEmployeeViaAPI(employeeInfo).then(
       (employeeResponse) => {
-        const empNumber = employeeResponse.body.data.empNumber.toString();
-        employeeIds.push(Number(empNumber));
+        const empNumber = employeeResponse.body.data.empNumber;
+        employeeIds.push(empNumber);
         createdEmployeesMap[empNumber] = employeeResponse.body.data;
 
         PIMPageHelper.createUserViaAPI(employeeInfo, empNumber).then(
@@ -58,19 +63,24 @@ describe("Claim Page Test Cases", () => {
                   ({ createdExpenseMap: map, expenseIds: ids }) => {
                     Object.assign(createdExpenseMap, map);
                     expenseIds.push(...ids);
+
+                    employeeData = createdEmployeesMap[employeeIds[0].toString()];
+                    currencies = claimPageInfo.multipleCurrencies!;
+                    expenses = claimPageInfo.multipleExpenses!;
+                    eventName = createdEventMap[eventIds[0]].name;
+                    cy.logout();
                   });
               });
           });
       });
   });
 
-  it("employee submits 3 claims (different currencies & expenses), admin approves/rejects/ignores", () => {
+  it("employee submits 3 claims (different currencies & expenses)", () => {
     const employeeData = createdEmployeesMap[employeeIds[0].toString()];
     const currencies = claimPageInfo.multipleCurrencies!;
     const expenses = claimPageInfo.multipleExpenses!;
     const eventName = createdEventMap[eventIds[0]].name;
 
-    cy.logout();
     cy.login(credentialsList[0].username, credentialsList[0].password);
 
     ClaimPage.applyMultipleClaimRequests(
@@ -78,38 +88,40 @@ describe("Claim Page Test Cases", () => {
       claimPageInfo,
       currencies,
       expenses
-    ).then((results) => {
+    )
+  })
+
+  const action = [
+    { status: "Approve", clickAction: () => ClaimPage.clickApprove() },
+    { status: "Reject", clickAction: () => ClaimPage.clickReject() }
+  ]
+  action.forEach(({ status, clickAction }) => {
+    it(`employee submits claim and admin ${status.toLowerCase()}s it`, () => {
+      cy.login(credentialsList[0].username, credentialsList[0].password);
+
+      ClaimPage.goToClaimPage();
+      ClaimPage.applyClaimRequest(eventName, currencies[0]);
+      ClaimPage.addExpense(claimPageInfo, expenses[0].name);
+      ClaimPage.clickSubmitBtn();
 
       cy.logout();
       cy.login();
       ClaimPage.goToClaimPage();
 
-      // accept first claim
-      const dataApprove = {
+      const data = {
         [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
-        [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[0].eventName,
-        [CLAIM_TABLE_HEADERS.CURRENCY]: results[0].currency,
+        [CLAIM_TABLE_HEADERS.EVENT_NAME]: eventName,
+        [CLAIM_TABLE_HEADERS.CURRENCY]: currencies[0],
         [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
       };
-      ClaimPage.clickAllowAction(dataApprove);
-      ClaimPage.clickApprove();
-      ClaimPage.goToClaimPage();
-
-      // reject second claim
-      const dataReject = {
-        [CLAIM_TABLE_HEADERS.EMPLOYEE_NAME]: `${employeeData.firstName} ${employeeData.lastName}`,
-        [CLAIM_TABLE_HEADERS.EVENT_NAME]: results[1].eventName,
-        [CLAIM_TABLE_HEADERS.CURRENCY]: results[1].currency,
-        [CLAIM_TABLE_HEADERS.STATUS]: claimPageInfo.claimRequestStatus,
-      };
-      ClaimPage.clickAllowAction(dataReject);
-      ClaimPage.clickReject();
+      ClaimPage.clickAllowAction(data);
+      clickAction();
     });
   })
-  
+
   afterEach(() => {
-    cy.logout()
-    cy.login()
+    cy.logout();
+    cy.login();
     PIMPageHelper.deleteUsers(employeeIds)
     ClaimPageHelper.deleteEventType(eventIds)
     ClaimPageHelper.deleteExpenseType(expenseIds)
