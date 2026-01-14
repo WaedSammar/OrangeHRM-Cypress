@@ -23,7 +23,7 @@ class LeavePageHelper {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.leaveTypes,
-      payload
+      payload,
     ).then((response) => {
       return response;
     });
@@ -38,17 +38,17 @@ class LeavePageHelper {
   static addLeaveEntitlements(
     leavePageInfo: ILeaveRequestData,
     empNumber: number,
-    leaveTypeId: number
+    leaveTypeId: number,
   ) {
     const payload = LeaveInitializer.initializerAddEntitlements(
       leavePageInfo,
       empNumber,
-      leaveTypeId
+      leaveTypeId,
     );
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.addLeaveEntitlements,
-      payload
+      payload,
     ).then((response) => {
       return response;
     });
@@ -56,20 +56,21 @@ class LeavePageHelper {
 
   /**
    * add leave entitlements for each employee
-   * @param {ILeaveRequestData} leavePageInfo 
-   * @param {number[]} empNumbers 
-   * @param {number} leaveTypeId 
-   * @returns 
+   * @param {ILeaveRequestData} leavePageInfo
+   * @param {number[]} empNumbers
+   * @param {number} leaveTypeId
+   * @returns
    */
-  static addLeaveEntitlementsForEachEmployee(leavePageInfo: ILeaveRequestData,
+  static addLeaveEntitlementsForEachEmployee(
+    leavePageInfo: ILeaveRequestData,
     empNumbers: number[],
-    leaveTypeId: number): Cypress.Chainable<any> {
-
+    leaveTypeId: number,
+  ): Cypress.Chainable<any> {
     let chain: Cypress.Chainable<any> = cy.wrap(null);
     empNumbers.forEach((empNumber) => {
       chain = chain.then(() => {
         return this.addLeaveEntitlements(leavePageInfo, empNumber, leaveTypeId);
-      })
+      });
     });
     return chain;
   }
@@ -85,7 +86,7 @@ class LeavePageHelper {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.PUT,
       URLs.leavePeriod,
-      payload
+      payload,
     ).then((response) => {
       return response;
     });
@@ -99,16 +100,16 @@ class LeavePageHelper {
    */
   static applyLeaveRequest(
     leavePageInfo: ILeaveRequestData,
-    leaveTypeId: number
+    leaveTypeId: number,
   ) {
     const payload = LeaveInitializer.initializerApplyLeaveRequest(
       leavePageInfo,
-      leaveTypeId
+      leaveTypeId,
     );
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.POST,
       URLs.leaveRequest,
-      payload
+      payload,
     ).then((response) => {
       return response;
     });
@@ -122,14 +123,14 @@ class LeavePageHelper {
    */
   static approveLeaveRequest(
     leavePageInfo: ILeaveRequestData,
-    requestId: number
+    requestId: number,
   ) {
     return CommonHelper.sendAPIRequest(
       HTTP_METHODS.PUT,
       `${URLs.employeeRequest}/${requestId}`,
       {
         action: leavePageInfo.leaveRequestStatus,
-      }
+      },
     );
   }
 
@@ -139,7 +140,7 @@ class LeavePageHelper {
    * @returns
    */
   static deleteLeaveType(leaveTypeIds: number[]) {
-    return CommonHelper.cleanup(URLs.leaveTypes, leaveTypeIds)
+    return CommonHelper.cleanup(URLs.leaveTypes, leaveTypeIds);
   }
 }
 export { LeavePageHelper };

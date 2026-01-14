@@ -4,7 +4,7 @@ class CommonHelper {
   static generateRandomString(
     length: number = 7,
     prefix: string = "",
-    suffix: string = ""
+    suffix: string = "",
   ): string {
     const possible =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -19,7 +19,7 @@ class CommonHelper {
   static interceptRequests(
     requestURL: string,
     httpRequestMethod: HTTP_METHODS,
-    aliasName: string
+    aliasName: string,
   ) {
     return new Cypress.Promise((resolve) => {
       cy.intercept({
@@ -35,7 +35,7 @@ class CommonHelper {
     method: string,
     url: string,
     body?: string | object,
-    header?: Record<string, string>
+    header?: Record<string, string>,
   ) {
     return cy
       .request({

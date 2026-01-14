@@ -41,7 +41,7 @@ describe("Employee management - Add and Save Test Cases", () => {
 
     const createLoadPersonalDetails = CommonHelper.generateRandomString(
       7,
-      "loadPersonalDetails"
+      "loadPersonalDetails",
     );
     APIsHelper.interceptGetEmployeeDetailsRequest(createLoadPersonalDetails);
     PIMPage.clickSave();
@@ -50,18 +50,18 @@ describe("Employee management - Add and Save Test Cases", () => {
     PIMPageHelper.getEmpNumberByEmployeeId(employeeInfo.employeeId).then(
       (empNumber) => {
         employeeNum.push(empNumber);
-      }
+      },
     );
   });
 
   it("Adding five employees via API", () => {
     for (let i = 0; i < 5; i++) {
-      PIMPageHelper.createEmployeeViaAPI(employeeInfo).then((response) => {
+      PIMPageHelper.createEmployeeViaAPI().then((response) => {
         employeeNum.push(response.body.data.empNumber);
         LeavePageHelper.addLeaveEntitlements(
           leavePageInfo,
           employeeNum[i],
-          leaveIds[0]
+          leaveIds[0],
         );
       });
     }

@@ -1,0 +1,33 @@
+{
+  "eventTypeName": "Business Trip",
+  "eventTypeDescription": "business trip",
+  "eventTypeStatus": true,
+  "expenseTypeName": "Transportation",
+  "expenseTypeDesc": "transportation",
+  "expenseTypeStatus": true,
+  "currencyType": "United States Dollar",
+  "claimRequestStatus": "Submitted",
+  "expenseDate": "2027-12-07",
+  "expenseAmount": "500.00",
+  "requestStatusAfterApproved": "Paid",
+  "requestStatusAfterRejected": "Rejected",
+  "multipleCurrencies": [
+    "United States Dollar",
+    "Euro",
+    "Japanese Yen"
+  ],
+  "multipleExpenses": [
+    {
+      "name": "Transportation",
+      "desc": "transportation"
+    },
+    {
+      "name": "Accommodations",
+      "desc": "accommodation"
+    },
+    {
+      "name": "Meals",
+      "desc": "meals"
+    }
+  ]
+}

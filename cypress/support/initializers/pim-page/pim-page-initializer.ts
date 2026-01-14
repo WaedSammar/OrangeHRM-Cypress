@@ -12,12 +12,13 @@ class PIMInitializer {
    * @param {IEmployeeInfo} employeeData
    * @returns
    */
-  static initializerEmployeePayload(employeeData: IEmployeeInfo) {
+  static initializerEmployeePayload(employeeData?: IEmployeeInfo) {
+    const data: IEmployeeInfo = employeeData || {} as IEmployeeInfo;
     const payload = {
-      firstName: faker.person.firstName(),
-      middleName: faker.person.middleName(),
-      lastName: faker.person.lastName(),
-      employeeId: faker.number.int({ min: 1000, max: 9999 }).toString(),
+      firstName: data.firstName || faker.person.firstName(),
+      middleName: data.middleName || faker.person.middleName(),
+      lastName: data.lastName || faker.person.lastName(),
+      employeeId: data.employeeId || faker.number.int({ min: 1000, max: 9999 }).toString(),
     };
     return payload;
   }
@@ -29,8 +30,8 @@ class PIMInitializer {
    */
   static initializerUserPayload(employeeData: IEmployeeInfo) {
     const payload = {
-      username: faker.internet.username(),
-      password: faker.internet.password({ prefix: "yo12" }),
+      username: employeeData.userName || faker.internet.username(),
+      password: employeeData.password || faker.internet.password({ prefix: "yo12" }),
       status: employeeData.status ?? faker.datatype.boolean(),
       userRoleId: UserRole.ESS,
     };

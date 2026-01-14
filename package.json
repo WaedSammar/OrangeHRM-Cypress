@@ -11,18 +11,13 @@
   "description": "",
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",
+    "axe-core": "^4.11.0",
     "cypress": "^15.5.0",
-    "cypress-plugin-api": "^2.11.2",
-    "@faker-js/faker": "^10.1.0",
-    "cypress": "^15.5.0",
+    "cypress-axe": "^1.7.0",
     "cypress-plugin-api": "^2.11.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "dayjs": "^1.11.18"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.18"
   }
 }
-

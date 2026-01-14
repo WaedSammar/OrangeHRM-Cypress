@@ -6,8 +6,8 @@ export interface ILeaveRequestData {
   entitlementEndDate: string;
   leavePerStartedDay: number;
   leavePerStartedMonth: number;
-  leaveRequestComment: string
-  leaveRequestFromDate: string
-  leaveRequestEndDate: string
+  leaveRequestComment: string;
+  leaveRequestFromDate: string;
+  leaveRequestEndDate: string;
   leaveRequestStatus: string;
 }

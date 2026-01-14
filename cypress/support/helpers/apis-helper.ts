@@ -12,7 +12,7 @@ class APIsHelper {
     CommonHelper.interceptRequests(
       URLs.personalDetails,
       HTTP_METHODS.GET,
-      aliasName
+      aliasName,
     );
   }
 
@@ -22,7 +22,7 @@ class APIsHelper {
 
   static waitForApiResponse(
     aliasName: string,
-    expectedStatus: number = HTTP_STATUS_CODE.success
+    expectedStatus: number = HTTP_STATUS_CODE.success,
   ) {
     cy.wait(`@${aliasName}`).then((interception) => {
       expect(interception.response.statusCode).to.equal(expectedStatus);

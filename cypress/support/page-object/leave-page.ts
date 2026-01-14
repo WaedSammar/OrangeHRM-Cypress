@@ -5,17 +5,17 @@ import { IEmployeeInfo } from "../types/employee";
 enum LABELS {
   EMPLOYEE_NAME = "Employee Name",
   LEAVE_TYPE = "Leave Type",
-  ENTITLEMENT = "Entitlement"
+  ENTITLEMENT = "Entitlement",
 }
 
 class LeavePage {
   private static LOCATORS = {
-    topbarNav: '.oxd-topbar-body-nav',
-    autoCompleteDropdown: '.oxd-autocomplete-dropdown',
-  }
+    topbarNav: ".oxd-topbar-body-nav",
+    autoCompleteDropdown: ".oxd-autocomplete-dropdown",
+  };
 
   static goToLeavePage() {
-    ElementHandler.clickMenuItem(PAGES.LEAVE)
+    ElementHandler.clickMenuItem(PAGES.LEAVE);
   }
 
   static clickApply() {

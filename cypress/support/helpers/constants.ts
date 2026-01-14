@@ -28,6 +28,7 @@ export enum HTML_TAGS {
 export enum PAGES {
   PIM = "PIM",
   LEAVE = "Leave",
+  CLAIM = "Claim",
 }
 
 export enum COMMON_BUTTONS {
@@ -36,4 +37,7 @@ export enum COMMON_BUTTONS {
   APPLY = "Apply",
   SEARCH = "Search",
   APPROVE = "Approve",
+  SUBMIT = "Submit",
+  CREATE = "Create",
+  REJECT = "Reject",
 }

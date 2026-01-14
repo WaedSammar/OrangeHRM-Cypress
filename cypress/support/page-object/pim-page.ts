@@ -26,7 +26,7 @@ class PIMPage {
   static goToPIMPage() {
     const loadGetEmployeesList = CommonHelper.generateRandomString(
       7,
-      "loadPIM_"
+      "loadPIM_",
     );
     APIsHelper.interceptGetEmployeesRequest(loadGetEmployeesList);
     ElementHandler.clickMenuItem(PAGES.PIM);
